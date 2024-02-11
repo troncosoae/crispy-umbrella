@@ -1,5 +1,7 @@
+from game.run import run
+
 def main():
-    print("Hello, World!")
+    run()
 
 if __name__ == "__main__":
     main()
