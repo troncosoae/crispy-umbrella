@@ -2,9 +2,9 @@
 
 class Board:
     def __init__(self, rows, cols):
-        self.rows = rows
-        self.cols = cols
-        self.board = self._init_board_representation()
+        self.__rows = rows
+        self.__cols = cols
+        self.__board = self._init_board_representation()
     
     def _init_board_representation(self):
         return [[Cell(row, col) for col in range(self.cols)] for row in range(self.rows)]
@@ -23,18 +23,30 @@ class Board:
     
     def __repr__(self):
         return self.__str__()
+
+    @property
+    def cols(self):
+        return self.__cols
+
+    @property
+    def rows(self):
+        return self.__rows
+
+    @property
+    def board(self):
+        return self.__board
     
     def evaluate_drop_piece(self, col: int):
         for row in range(self.rows - 1, -1, -1):
-            if self.board[row][col].get_status() == CellStatus(0):
+            if self.__board[row][col].get_status() == CellStatus(0):
                 return True
         return False
     
     def drop_piece(self, col: int, piece_status: 'CellStatus'):
         assert self.evaluate_drop_piece(col)
         for row in range(self.rows - 1, -1, -1):
-            if self.board[row][col].get_status() == CellStatus(0):
-                self.board[row][col].insert_piece(piece_status)
+            if self.__board[row][col].get_status() == CellStatus(0):
+                self.__board[row][col].insert_piece(piece_status)
                 break
 
 
