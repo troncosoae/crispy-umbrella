@@ -10,22 +10,6 @@ from runner.game_runner import GameRunner as Runner, GuiType
 
 # TODO: make sure that the players is the right type. 
 
-class GameRunner:
-    def __init__(self, board: 'Board', players: 'List[Player]'):
-        self.board = board
-        assert len(players) == 2
-        self.players = players
-
-    def __str__(self):
-        game_runner_str = ""
-        for player in self.players:
-            print(player)
-        game_runner_str += str(self.board)
-        return game_runner_str
-
-    def __repr__(self):
-        return self.__str__()
-
 def run():
     print("Connect 4!")
     board = Board(6, 7)
