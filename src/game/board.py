@@ -35,7 +35,7 @@ class Board:
     @property
     def board(self):
         return self.__board
-    
+
     def evaluate_drop_piece(self, col: int):
         for row in range(self.rows - 1, -1, -1):
             if self.__board[row][col].get_status() == CellStatus(0):
@@ -49,6 +49,67 @@ class Board:
                 self.__board[row][col].insert_piece(piece_status)
                 break
 
+
+class BoardGetter:
+    def __init__(self):
+        pass
+
+    def get_board_col(self, board: 'Board', col_index: 'int'):
+        assert col_index < board.cols
+        return [row[col_index] for row in board.board]
+
+    def get_board_row(self, board: 'Board', row_index: 'int'):
+        assert row_index < board.rows
+        return board.board[row_index]
+
+    def get_board_diag_pos_pos(self, board: 'Board', row_index: 'int', col_index: 'int'):
+        assert row_index < board.rows
+        assert col_index < board.cols
+        row_index_is_larger = row_index > col_index
+        if row_index_is_larger:
+            row_index -= col_index
+            col_index -= col_index
+        else:
+            col_index -= row_index
+            row_index -= row_index
+        print(row_index, col_index)
+        assert row_index >= 0
+        assert col_index >= 0
+
+        cols_diff = board.cols - col_index
+        rows_diff = board.rows - row_index
+        range_size = rows_diff if cols_diff > rows_diff \
+            else cols_diff
+
+        print(row_index, col_index, range_size)
+
+        return [board.board[row_index + i][col_index + i]
+            for i in range(range_size)]
+
+    def get_board_diag_pos_neg(self, board: 'Board', row_index: 'int', col_index: 'int'):
+        assert row_index < board.rows
+        assert col_index < board.cols
+        dist_to_end_col = board.cols - col_index
+        row_index_is_larger = row_index > dist_to_end_col
+        if row_index_is_larger:
+            row_index -= dist_to_end_col - 1
+            col_index += dist_to_end_col - 1
+        else:
+            col_index += row_index
+            row_index -= row_index
+        print(row_index, col_index)
+        assert row_index >= 0
+        assert col_index < board.cols
+
+        cols_diff = board.cols - col_index
+        rows_diff = board.rows - row_index
+        range_size = rows_diff if cols_diff > rows_diff \
+            else cols_diff
+
+        print(row_index, col_index, range_size)
+
+        return [board.board[row_index + i][col_index - i]
+            for i in range(range_size)]
 
 
 class Cell:

@@ -41,16 +41,18 @@ def run():
     print(board)
     board.drop_piece(0, CellStatus(1))
     print(board)
+    board.drop_piece(1, CellStatus(1))
+    print(board)
+    board.drop_piece(2, CellStatus(1))
+    print(board)
+    board.drop_piece(3, CellStatus(1))
+    print(board)
 
     player1 = Player()
     print(player1)
     player2 = Player()
     print(player2)
 
-    game_runner = GameRunner(
-            board,
-            [player1, player2])
-    print(game_runner)
 
     base_gui = BaseGUI(board)
     terminal_gui = TerminalGUI(board)
