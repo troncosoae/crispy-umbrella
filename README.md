@@ -35,3 +35,16 @@ $ python3 src/main.py
 ```console
 $ deactivate
 ```
+
+## Test
+
+### Run all unit tests. 
+
+```console
+$ cd src
+```
+
+```console
+$ python -m unittest discover
+```
+

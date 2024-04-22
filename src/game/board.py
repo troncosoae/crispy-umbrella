@@ -97,6 +97,7 @@ class BoardGetter:
         else:
             col_index += row_index
             row_index -= row_index
+        print(row_index, col_index)
         assert row_index >= 0
         assert col_index < board.cols
 
@@ -104,6 +105,8 @@ class BoardGetter:
         rows_diff = board.rows - row_index
         range_size = rows_diff if cols_diff > rows_diff \
             else cols_diff
+
+        print(row_index, col_index, range_size)
 
         return [board.board[row_index + i][col_index - i]
             for i in range(range_size)]
@@ -125,6 +128,7 @@ class Cell:
         return self.__str__()
     
     def insert_piece(self, new_status: 'CellStatus'):
+        print(type(new_status))
         self.__status.set_status(new_status.get_status())
         assert self.__status == new_status
     

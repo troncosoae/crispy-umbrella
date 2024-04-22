@@ -146,8 +146,56 @@ class TestBoard(unittest.TestCase):
             else:
                 self.assertEqual(cell.get_status(), CellStatus(2))
             index += 1
+    
+    def test_get_board_diag_pos_neg(self):
+        board = self.get_populated_board()
+        board_getter = BoardGetter()
 
+        diag = board_getter.get_board_diag_pos_neg(board, 0, 0)
+        self.assertEqual(len(diag), 1)
+
+        diag = board_getter.get_board_diag_pos_neg(board, 2, 2)
+        self.assertEqual(len(diag), 5)
+
+        diag = board_getter.get_board_diag_pos_neg(board, 0, 1)
+        self.assertEqual(len(diag), 2)
+
+        diag = board_getter.get_board_diag_pos_neg(board, 1, 0)
+        self.assertEqual(len(diag), 2)
+
+        diag = board_getter.get_board_diag_pos_neg(board, 5, 6)
+        self.assertEqual(len(diag), 1)
+
+        diag = board_getter.get_board_diag_pos_neg(board, 3, 6)
+        self.assertEqual(len(diag), 3)
+
+        diag = board_getter.get_board_diag_pos_neg(board, 0, 6)
+        self.assertEqual(len(diag), 6)
+
+        self.assertEqual(
+            board_getter.get_board_diag_pos_neg(board, 0, 6),
+            board_getter.get_board_diag_pos_neg(board, 2, 4))
+        
+        self.assertEqual(
+            board_getter.get_board_diag_pos_neg(board, 1, 6),
+            board_getter.get_board_diag_pos_neg(board, 3, 4))
+        
+        diag = board_getter.get_board_diag_pos_neg(board, 1, 6)
+        self.assertEqual(diag[0].get_status(), CellStatus(0))
+        self.assertEqual(diag[1].get_status(), CellStatus(0))
+        self.assertEqual(diag[2].get_status(), CellStatus(0))
+        self.assertEqual(diag[3].get_status(), CellStatus(2))
+        self.assertEqual(diag[4].get_status(), CellStatus(1))
+        
+        diag = board_getter.get_board_diag_pos_neg(board, 1, 0)
+        self.assertEqual(diag[0].get_status(), CellStatus(2))
+        self.assertEqual(diag[1].get_status(), CellStatus(1))
+
+        self.assertEqual(
+            board_getter.get_board_diag_pos_neg(board, 3, 0),
+            board_getter.get_board_diag_pos_neg(board, 0, 3))
 
 
 if __name__ == "__main__":
     unittest.main()
+
