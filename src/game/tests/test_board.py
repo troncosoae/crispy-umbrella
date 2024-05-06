@@ -150,6 +150,7 @@ class TestBoard(unittest.TestCase):
     def test_get_board_diag_pos_neg(self):
         board = self.get_populated_board()
         board_getter = BoardGetter()
+        print(board)
 
         diag = board_getter.get_board_diag_pos_neg(board, 0, 0)
         self.assertEqual(len(diag), 1)
@@ -166,6 +167,9 @@ class TestBoard(unittest.TestCase):
         diag = board_getter.get_board_diag_pos_neg(board, 5, 6)
         self.assertEqual(len(diag), 1)
 
+        diag = board_getter.get_board_diag_pos_neg(board, 5, 2)
+        self.assertEqual(len(diag), 5)
+
         diag = board_getter.get_board_diag_pos_neg(board, 3, 6)
         self.assertEqual(len(diag), 3)
 
@@ -181,15 +185,15 @@ class TestBoard(unittest.TestCase):
             board_getter.get_board_diag_pos_neg(board, 3, 4))
         
         diag = board_getter.get_board_diag_pos_neg(board, 1, 6)
-        self.assertEqual(diag[0].get_status(), CellStatus(0))
-        self.assertEqual(diag[1].get_status(), CellStatus(0))
+        self.assertEqual(diag[0].get_status(), CellStatus(1))
+        self.assertEqual(diag[1].get_status(), CellStatus(2))
         self.assertEqual(diag[2].get_status(), CellStatus(0))
-        self.assertEqual(diag[3].get_status(), CellStatus(2))
-        self.assertEqual(diag[4].get_status(), CellStatus(1))
+        self.assertEqual(diag[3].get_status(), CellStatus(0))
+        self.assertEqual(diag[4].get_status(), CellStatus(0))
         
         diag = board_getter.get_board_diag_pos_neg(board, 1, 0)
-        self.assertEqual(diag[0].get_status(), CellStatus(2))
-        self.assertEqual(diag[1].get_status(), CellStatus(1))
+        self.assertEqual(diag[0].get_status(), CellStatus(1))
+        self.assertEqual(diag[1].get_status(), CellStatus(2))
 
         self.assertEqual(
             board_getter.get_board_diag_pos_neg(board, 3, 0),

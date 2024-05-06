@@ -22,14 +22,10 @@ class GameLogic:
         return self.__getter.get_board_col(self.__board, col_index)
 
     def __get_board_diag_pp(self, row_index: 'int', col_index: 'int'):
-        print(self.__getter.get_board_diag_pos_pos(
-            self.__board, row_index, col_index))
         return self.__getter.get_board_diag_pos_pos(
             self.__board, row_index, col_index)
 
     def __get_board_diag_pn(self, row_index: 'int', col_index: 'int'):
-        print(self.__getter.get_board_diag_pos_neg(
-            self.__board, row_index, col_index))
         return self.__getter.get_board_diag_pos_neg(
             self.__board, row_index, col_index)
 
@@ -44,9 +40,6 @@ class GameLogic:
             if consecutive_count == 4:
                 return True
         return False
-
-    def evaluate(self, cell_status: 'CellStatus'):
-        pass
 
     def evaluate_row(self, row_index: 'int', cell_status: 'CellStatus') -> bool:
         return self.__evaluate_four(

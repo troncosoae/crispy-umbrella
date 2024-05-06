@@ -3,7 +3,7 @@ from enum import Enum
 from game.board import Board, CellStatus
 from game.logic import GameLogic
 from game.player import Player
-from gui.terminal_interface.terminal_interface import TerminalGUI
+from gui.terminal_interface.terminal_interface import TerminalGUI, TerminalPlayer
 from gui.base_interface import BaseGUI
 
 
@@ -48,6 +48,9 @@ class GameRunner:
             raise AssertionError("This player id isn't recorded in the game. ")
         return result
 
+    def __get_cell_status_from_player(self, player: 'Player') -> 'CellStatus':
+        return CellStatus(self.__player_cell_status_map.get(player.id))
+
     @property
     def __player1_id(self) -> int:
         return self.__player_array[0]
@@ -71,6 +74,13 @@ class GameRunner:
         if result is None:
             raise AssertionError("This player id isn't recorded in the game. ")
         return result
+    
+    def __evaluate_win(
+            self, col_index: int, row_index: int, cell_status: CellStatus) -> bool:
+        return self.__logic.evaluate_row(row_index, cell_status) or \
+            self.__logic.evaluate_col(col_index, cell_status) or \
+            self.__logic.evaluate_diag_pp(row_index, col_index, cell_status) or \
+            self.__logic.evaluate_diag_pn(row_index, col_index, cell_status)
 
     def run(self):
         print("Starting terminal GUI...")
@@ -80,17 +90,36 @@ class GameRunner:
 
         valid_inputs = [i for i in range(7)]
 
+        self.__gui.print_board()
+
         while not have_winner:
-
-            self.__gui.print_board()
-
             active_player = self.__get_player_from_turn_count(turn_count)
 
-            self.__gui.get_player_action(active_player, valid_inputs)
+            filtered_valid_inputs = [
+                i for i in valid_inputs
+                if self.__board.evaluate_drop_piece(i)]
             
-            if turn_count > 2:
+            # print(filtered_valid_inputs)
+
+
+            player_action = self.__gui.get_player_action(active_player, filtered_valid_inputs)
+
+            final_position = self.__board.drop_piece(
+                player_action.col_index,
+                self.__get_cell_status_from_player(active_player))
+            
+            # print(final_position)
+
+            if self.__evaluate_win(
+                    final_position[1],
+                    final_position[0],
+                    self.__get_cell_status_from_player(active_player)):
+                print(f"Player {active_player.id} wins!")
                 have_winner = True
+            
             turn_count += 1
+
+            self.__gui.print_board()
 
 
 def run():
@@ -100,12 +129,10 @@ def run():
 
     board = Board(6, 7)
 
-    player1 = Player()
-    player2 = Player()
+    player1 = TerminalPlayer()
+    player2 = TerminalPlayer()
 
     gui_type = GuiType.TERMINAL
     runner = GameRunner(board, player1, player2, gui_type)
     runner.run()
-
-
 
