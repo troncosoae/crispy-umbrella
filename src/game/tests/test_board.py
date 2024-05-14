@@ -7,12 +7,12 @@ class TestBoard(unittest.TestCase):
         pass
     
     def test_starting_board(self):
-        board = Board(6, 7)
+        board = Board()
         self.assertEqual(board.rows, 6)
         self.assertEqual(board.cols, 7)
     
     def test_drop_piece(self):
-        board = Board(6, 7)
+        board = Board()
         board.drop_piece(0, CellStatus(1))
         self.assertEqual(board.board[5][0].get_status(), CellStatus(1))
 
@@ -23,7 +23,7 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(board.board[5][1].get_status(), CellStatus(1))
     
     def test_fail_on_drop_piece(self):
-        board = Board(6, 7)
+        board = Board()
         board.drop_piece(0, CellStatus(1))
         board.drop_piece(0, CellStatus(2))
         board.drop_piece(0, CellStatus(1))
@@ -36,7 +36,7 @@ class TestBoard(unittest.TestCase):
             board.drop_piece(0, CellStatus(1))
     
     def get_populated_board(self) -> 'Board':
-        board = Board(6, 7)
+        board = Board()
 
         board.drop_piece(0, CellStatus(1))
         board.drop_piece(0, CellStatus(2))
@@ -151,6 +151,10 @@ class TestBoard(unittest.TestCase):
         board = self.get_populated_board()
         board_getter = BoardGetter()
         print(board)
+
+        cell = board_getter.get_board_cell(board, 0, 2)
+        self.assertEqual(cell.row_index, 0)
+        self.assertEqual(cell.col_index, 2)
 
         diag = board_getter.get_board_diag_pos_neg(board, 0, 0)
         self.assertEqual(len(diag), 1)

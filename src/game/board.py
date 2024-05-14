@@ -3,30 +3,31 @@ from typing import Tuple
 
 
 class CellStatus:
-    def __init__(self, status=0):
-        self.__status = status
+    def __init__(self, status: int=0) -> None:
+        self.__status: int = status
     
-    def __str__(self):
+    def __str__(self) -> str:
         if self.__status == 0:
             return "_"
         elif self.__status == 1:
             return "X"
         elif self.__status == 2:
             return "O"
+        raise Exception("Invalid status")
     
     def __repr__(self):
         return self.__str__()
     
-    def __eq__(self, other: 'CellStatus'):
+    def __eq__(self, other) -> bool:
         assert(isinstance(other, CellStatus))
         return self.__status == other.__status
     
-    def __ne__(self, other: 'CellStatus'):
+    def __ne__(self, other) -> bool:
         assert(isinstance(other, CellStatus))
         return self.__status != other.__status
     
     def is_valid(self):
-        return self.status == 0 or \
+        return self.__status == 0 or \
             self.__status == 1 or \
             self.__status == 2
     
@@ -60,14 +61,21 @@ class Cell:
     
     def get_status(self) -> CellStatus:
         return self.__status
-    
+
+    @property
+    def row_index(self):
+        return self.__row
+
+    @property
+    def col_index(self):
+        return self.__col
 
     
 
 class Board:
-    def __init__(self, rows, cols):
-        self.__rows = rows
-        self.__cols = cols
+    def __init__(self):
+        self.__rows = 6
+        self.__cols = 7
         self.__board = self._init_board_representation()
     
     def _init_board_representation(self):
@@ -100,7 +108,7 @@ class Board:
     def board(self):
         return self.__board
 
-    def evaluate_drop_piece(self, col: int):
+    def evaluate_drop_piece(self, col: int) -> bool:
         for row in range(self.rows - 1, -1, -1):
             if self.__board[row][col].get_status() == CellStatus(0):
                 # print("found spot")
@@ -114,17 +122,25 @@ class Board:
                 self.__board[row][col].insert_piece(piece_status)
                 return (row, col)
         assert False
+    
+    def reset(self) -> None:
+        self.__board = self._init_board_representation()
+
 
 
 class BoardGetter:
     def __init__(self):
         pass
 
+    def get_board_cell(self, board: Board, row_index: int, col_index: int):
+        return board.board[row_index][col_index]
+
     def get_board_col(self, board: Board, col_index: int):
         assert col_index < board.cols
         return [row[col_index] for row in board.board]
 
     def get_board_row(self, board: Board, row_index: int):
+        # print("row_index", row_index)
         assert row_index < board.rows
         return board.board[row_index]
 

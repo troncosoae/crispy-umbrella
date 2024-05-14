@@ -1,6 +1,6 @@
 from typing import List
 
-from game.board import Board
+from game.board import Board, CellStatus
 from game.player import Player, PlayerAction
 from gui.base_interface import BaseGUI
 
@@ -9,7 +9,9 @@ class TerminalPlayer(Player):
     def __init__(self) -> None:
         super().__init__()
     
-    def get_action(self, valid_inputs: List[int]) -> PlayerAction:
+    def get_action(
+            self, valid_inputs: List[int], board: Board,
+            cell_status: CellStatus) -> PlayerAction:
         command_request_str = "Player %s, the column to insert your chip: " % self.id
 
         input_is_valid = False
@@ -35,6 +37,9 @@ class TerminalGUI(BaseGUI):
     def __init__(self, board: 'Board'):
         BaseGUI.__init__(self, board)
 
+    def print_init_banner(self) -> None:
+        print("Starting terminal GUI...")
+
     def print_board(self):
         board_str = "    "
         for i in range(self.board.cols):
@@ -53,8 +58,14 @@ class TerminalGUI(BaseGUI):
 
     def get_player_action(
             self,
-            player: 'Player',
-            valid_inputs: 'List[int]') -> PlayerAction:
+            player: Player,
+            valid_inputs: List[int],
+            cell_status: CellStatus) -> PlayerAction:
         command_request_str = "Player %s, the column to insert your chip: " % str(player)
 
-        return player.get_action(valid_inputs)
+        return player.get_action(valid_inputs, self.board, cell_status)
+
+    def print_winner(self, player: Player) -> None:
+        print(f"Player {player.id} wins!")
+
+

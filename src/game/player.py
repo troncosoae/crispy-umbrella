@@ -1,4 +1,5 @@
 from typing import List
+from game.board import Board, CellStatus
 
 class PlayerAction:
     def __init__(self, player_id: 'int', col_index: 'int'):
@@ -34,5 +35,6 @@ class Player:
     def __repr__(self) -> str:
         return self.__str__()
     
-    def get_action(self, valid_inputs: List[int]) -> PlayerAction:
+    def get_action(self, valid_inputs: List[int], board: Board, next_status: CellStatus) -> PlayerAction:
         raise Exception("Calling get_player_action from Player (the base class)")
+

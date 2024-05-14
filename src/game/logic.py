@@ -4,8 +4,11 @@ from game.board import Board, BoardGetter, CellStatus, Cell
 
 class GameLogic:
     def __init__(self, board: 'Board'):
-        self.__board = board
+        self.set_board(board)
         self.__getter = BoardGetter()
+
+    def set_board(self, board: Board):
+        self.__board = board
 
     @property
     def board_cols(self):
@@ -51,13 +54,31 @@ class GameLogic:
             self.__get_board_col(col_index),
             cell_status)
     
-    def evaluate_diag_pp(self, row_index: 'int', col_index: 'int', cell_status: 'CellStatus'):
+    def evaluate_diag_pp(
+            self, row_index: 'int', col_index: 'int', cell_status: 'CellStatus') -> bool:
         return self.__evaluate_four(
             self.__get_board_diag_pp(row_index, col_index),
             cell_status)
     
-    def evaluate_diag_pn(self, row_index: 'int', col_index: 'int', cell_status: 'CellStatus'):
+    def evaluate_diag_pn(
+            self, row_index: 'int', col_index: 'int', cell_status: 'CellStatus') -> bool:
         return self.__evaluate_four(
             self.__get_board_diag_pn(row_index, col_index),
             cell_status)
+
+    def evaluate_win(
+            self, row_index: int, col_index: int) -> bool:
+        cell: Cell = self.__getter.get_board_cell(self.__board, row_index, col_index)
+        print("cell.get_status()", cell.get_status())
+        print(self.__board)
+        print("cell", cell.row_index, cell.col_index)
+        return self.evaluate_win_with_status(row_index, col_index, cell.get_status())
+
+    def evaluate_win_with_status(
+            self, row_index: int, col_index: int, cell_status: CellStatus) -> bool:
+        return self.evaluate_row(row_index, cell_status) or \
+                self.evaluate_col(col_index, cell_status) or \
+                self.evaluate_diag_pp(row_index, col_index, cell_status) or \
+                self.evaluate_diag_pn(row_index, col_index, cell_status)
+
 

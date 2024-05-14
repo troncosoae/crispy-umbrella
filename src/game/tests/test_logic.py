@@ -9,7 +9,7 @@ class TestGameLogic(unittest.TestCase):
         pass
 
     def get_populated_board(self) -> 'Board':
-        board = Board(6, 7)
+        board = Board()
 
         board.drop_piece(2, CellStatus(1))
         board.drop_piece(2, CellStatus(2))
