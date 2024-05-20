@@ -13,11 +13,11 @@ def build_parser() -> ArgumentParser:
         help='Mode in which to run the platform. ')
     parser.add_argument(
         '-p1', '--player1', type=str, default='term',
-        choices=['term', 'random_ai', 'ml_ai', 'look_ahead'],
+        choices=['term', 'random_ai', 'ml_ai', 'look_ahead', 'qlearn'],
         help='Player type for player 1. ')
     parser.add_argument(
         '-p2', '--player2', type=str, default='term',
-        choices=['term', 'random_ai', 'ml_ai', 'look_ahead'],
+        choices=['term', 'random_ai', 'ml_ai', 'look_ahead', 'qlearn'],
         help='Player type for player 2. ')
     parser.add_argument(
         '-gt', '--gui_type', type=str, default='term',

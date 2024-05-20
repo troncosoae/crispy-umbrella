@@ -8,6 +8,7 @@ from gui.terminal_interface.terminal_interface import TerminalGUI, TerminalPlaye
 from gui.base_interface import BaseGUI
 from ai.random.random_ai import RandomPlayer
 from ai.look_ahead.look_ahead import LookAheadPlayer
+from ai.qlearn.qlearn import QLearningPlayer
 
 
 class GuiType(Enum):
@@ -153,6 +154,8 @@ def run(player1_type: str, player2_type: str, gui_type: str) -> None:
         player1 = LookAheadPlayer()
     elif player1_type == "ml_ai":
         raise Exception("Not implemented yet!")
+    elif player1_type == "qlearn":
+        player1 = QLearningPlayer()
     else:
         raise Exception("Something doesn't add up... ")
 
@@ -165,6 +168,8 @@ def run(player1_type: str, player2_type: str, gui_type: str) -> None:
         player2 = LookAheadPlayer()
     elif player2_type == "ml_ai":
         raise Exception("Not implemented yet!")
+    elif player2_type == "qlearn":
+        player2 = QLearningPlayer()
     else:
         raise Exception("Something doesn't add up... ")
     
